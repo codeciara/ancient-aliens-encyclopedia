@@ -1,0 +1,243 @@
+/* ============================================================
+   THE ANCIENT ALIENS ENCYCLOPEDIA
+   EPUB Stylesheet - Reflowable, reader-friendly
+   Minimal CSS for maximum e-reader compatibility
+   ============================================================ */
+
+/* === BASE TYPOGRAPHY === */
+body {
+  font-family: serif;
+  font-size: 1em;
+  line-height: 1.6;
+  color: #2d2d2d;
+  margin: 0;
+  padding: 0;
+}
+
+/* === HEADINGS === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: serif;
+  line-height: 1.3;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  page-break-after: avoid;
+}
+
+h1 { font-size: 1.8em; font-weight: 700; text-align: center; margin-top: 2em; }
+h2 { font-size: 1.4em; font-weight: 600; border-bottom: 1px solid #c4a94d; padding-bottom: 0.3em; }
+h3 { font-size: 1.2em; font-weight: 600; }
+h4 { font-size: 1em; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85em; }
+
+/* === PARAGRAPHS & TEXT === */
+p {
+  margin: 0 0 0.8em;
+  text-align: justify;
+}
+
+em { font-style: italic; }
+strong { font-weight: 700; }
+
+blockquote {
+  margin: 1em 1.5em;
+  padding: 0.5em 1em;
+  border-left: 3px solid #c4a94d;
+  font-style: italic;
+  color: #444;
+}
+
+/* === LINKS === */
+a {
+  color: #1a2744;
+  text-decoration: underline;
+}
+
+/* === LISTS === */
+ul, ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+li { margin-bottom: 0.3em; }
+
+/* === COVER === */
+.cover-page {
+  text-align: center;
+  padding: 3em 1em;
+}
+
+.cover-page h1 {
+  font-size: 2em;
+  margin-bottom: 0.3em;
+}
+
+.cover-page .subtitle {
+  font-size: 1em;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 2em;
+}
+
+.cover-page .author {
+  font-size: 1.1em;
+  margin-top: 2em;
+}
+
+/* === DISCLAIMER === */
+.disclaimer {
+  font-size: 0.9em;
+  line-height: 1.7;
+  margin: 2em 0;
+}
+
+.disclaimer h2 {
+  font-size: 1.2em;
+  border-bottom: none;
+}
+
+/* === EPISODE PAGES === */
+.episode-entry {
+  margin-bottom: 2em;
+  page-break-inside: avoid;
+}
+
+.episode-meta {
+  font-size: 0.85em;
+  color: #888;
+  margin-bottom: 0.5em;
+}
+
+.episode-number {
+  font-weight: 600;
+  color: #b8960c;
+}
+
+.central-question {
+  background: #f9f7f2;
+  padding: 0.8em 1em;
+  border-left: 3px solid #b8960c;
+  margin: 0.8em 0;
+  font-style: italic;
+}
+
+/* === ENCYCLOPEDIA ENTRIES === */
+.encyclopedia-entry {
+  margin-bottom: 2em;
+}
+
+.alternate-names {
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 0.8em;
+}
+
+/* === FIELD SECTIONS === */
+.field-section {
+  margin-bottom: 1em;
+}
+
+.field-label {
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #b8960c;
+  margin-bottom: 0.2em;
+}
+
+.field-content {
+  margin: 0;
+}
+
+/* === EVIDENCE & CLAIMS === */
+.claims-section {
+  margin-top: 1em;
+  padding-top: 0.8em;
+  border-top: 1px solid #e8e2d6;
+}
+
+.claim {
+  margin-bottom: 0.8em;
+  padding: 0.5em 0.8em;
+  background: #fafaf7;
+  border: 1px solid #e8e2d6;
+  border-radius: 3px;
+}
+
+.claim-statement {
+  margin-bottom: 0.3em;
+}
+
+.evidence-label {
+  display: inline;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.1em 0.4em;
+  background: #e8e2d6;
+  border-radius: 3px;
+  margin-right: 0.3em;
+}
+
+.evidence-level {
+  display: inline;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.1em 0.4em;
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+.level-1 { color: #8b4513; border-color: #8b4513; }
+.level-2 { color: #b8860b; border-color: #b8860b; }
+.level-3 { color: #4a6741; border-color: #4a6741; }
+.level-4 { color: #2c5282; border-color: #2c5282; }
+.level-5 { color: #1a4731; border-color: #1a4731; }
+
+/* === PERSON PROFILES === */
+.person-entry {
+  margin-bottom: 2em;
+}
+
+/* === LOCATION ENTRIES === */
+.location-entry {
+  margin-bottom: 2em;
+}
+
+.location-meta {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 0.8em;
+}
+
+/* === TABLES (simplified for e-readers) === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9em;
+}
+
+th, td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f4f0e8;
+  font-weight: 600;
+}
+
+/* === SECTION DIVIDERS === */
+.section-divider {
+  text-align: center;
+  margin: 2em 0;
+}
+
+.section-divider hr {
+  border: none;
+  border-top: 1px solid #c4a94d;
+  width: 40%;
+  margin: 0 auto;
+}

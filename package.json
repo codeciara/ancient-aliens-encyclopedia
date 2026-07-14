@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed": "npx tsx prisma/seed-full.ts",
     "db:reset": "npx prisma migrate reset --force",
     "db:studio": "npx prisma studio",
     "postinstall": "npx prisma generate"

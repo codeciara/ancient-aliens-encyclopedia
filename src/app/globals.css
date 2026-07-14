@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Primary Palette */
+  --color-charcoal: #2d2d2d;
+  --color-charcoal-light: #3d3d3d;
+  --color-charcoal-lighter: #4d4d4d;
+  --color-parchment: #f4f0e8;
+  --color-parchment-dark: #e8e2d6;
+  --color-parchment-darker: #d4cdc0;
+
+  /* Accent Colors */
+  --color-gold: #b8960c;
+  --color-gold-muted: #c4a94d;
+  --color-gold-light: #e8d48b;
+  --color-sandstone: #c9a96e;
+  --color-deep-blue: #1a2744;
+  --color-night-sky: #0f1b2d;
+
+  /* Semantic Colors */
+  --color-success: #2d6a4f;
+  --color-warning: #b8860b;
+  --color-error: #8b0000;
+  --color-info: #2c5282;
+
+  /* Evidence Context Level Colors */
+  --color-evidence-1: #8b4513;
+  --color-evidence-2: #b8860b;
+  --color-evidence-3: #4a6741;
+  --color-evidence-4: #2c5282;
+  --color-evidence-5: #1a4731;
+
+  /* Typography */
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Spacing (using Tailwind defaults, custom additions) */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+}
+
+/* Base styles */
+:root {
+  --background: #f4f0e8;
+  --foreground: #2d2d2d;
+  --sidebar-bg: #1a2744;
+  --sidebar-text: #f4f0e8;
+  --card-bg: #ffffff;
+  --border-color: #d4cdc0;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--parchment-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-sandstone);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-muted);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Typography helpers */
+.font-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+.font-heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+}

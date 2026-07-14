@@ -1,0 +1,648 @@
+// The Ancient Aliens Encyclopedia - Database Schema
+// Prisma ORM with SQLite
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ============================================================
+// CORE CONTENT ENTITIES
+// ============================================================
+
+model Episode {
+  id                       String   @id @default(cuid())
+  slug                     String   @unique
+  seasonNumber             Int
+  episodeNumber            Int
+  title                    String
+  originalAirDate          String?
+  summary                  String?
+  centralQuestion          String?
+  mainSubjects             String?
+  conventionalExplanations String?
+  internalNotes            String?
+  status                   String   @default("DRAFT")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  lastReviewedAt           DateTime?
+
+  // Relations
+  claims          Claim[]
+  citations       Citation[]
+  tags            TagOnEntity[]
+  images          ImageAsset[]
+  bookChapterItems BookChapterItem[]
+  episodeEntries  EpisodeEntry[]
+  episodePeople   EpisodePerson[]
+  episodeLocations EpisodeLocation[]
+  episodeArtifacts EpisodeArtifact[]
+  episodeCivilizations EpisodeCivilization[]
+
+  @@unique([seasonNumber, episodeNumber])
+}
+
+model EncyclopediaEntry {
+  id                    String   @id @default(cuid())
+  slug                  String   @unique
+  title                 String
+  alternateNames        String?
+  category              String?
+  briefOverview         String?
+  historicalBackground  String?
+  ancientAstronautView  String?
+  mainstreamView        String?
+  evidenceCited         String?
+  unresolvedQuestions   String?
+  internalNotes         String?
+  status                String   @default("DRAFT")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  lastReviewedAt        DateTime?
+
+  // Relations
+  claims          Claim[]
+  citations       Citation[]
+  tags            TagOnEntity[]
+  images          ImageAsset[]
+  bookChapterItems BookChapterItem[]
+  episodeEntries  EpisodeEntry[]
+  entryPeople     EntryPerson[]
+  entryLocations  EntryLocation[]
+  entryArtifacts  EntryArtifact[]
+  relatedFrom     EntryRelation[] @relation("source")
+  relatedTo       EntryRelation[] @relation("target")
+}
+
+model Person {
+  id                  String   @id @default(cuid())
+  slug                String   @unique
+  name                String
+  biography           String?
+  mainTheories        String?
+  publishedWorks      String?
+  associatedTopics    String?
+  supportAndCriticism String?
+  internalNotes       String?
+  status              String   @default("DRAFT")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  images          ImageAsset[]
+  bookChapterItems BookChapterItem[]
+  episodePeople   EpisodePerson[]
+  entryPeople     EntryPerson[]
+  personTheories  PersonTheory[]
+}
+
+model Location {
+  id                      String   @id @default(cuid())
+  slug                    String   @unique
+  name                    String
+  country                 String?
+  region                  String?
+  latitude                Float?
+  longitude               Float?
+  civilization            String?
+  historicalPeriod        String?
+  knownBuilders           String?
+  description             String?
+  archaeologicalConsensus String?
+  ancientAstronautView    String?
+  unresolvedQuestions     String?
+  mapReference            String?
+  internalNotes           String?
+  status                  String   @default("DRAFT")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  images          ImageAsset[]
+  bookChapterItems BookChapterItem[]
+  episodeLocations EpisodeLocation[]
+  entryLocations  EntryLocation[]
+  locationArtifacts LocationArtifact[]
+  locationCivilizations LocationCivilization[]
+}
+
+model Theory {
+  id                 String   @id @default(cuid())
+  slug               String   @unique
+  title              String
+  overview           String?
+  historicalContext   String?
+  keyArguments       String?
+  supportingEvidence String?
+  counterArguments   String?
+  relatedTexts       String?
+  internalNotes      String?
+  status             String   @default("DRAFT")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  claims          Claim[]
+  citations       Citation[]
+  tags            TagOnEntity[]
+  bookChapterItems BookChapterItem[]
+  personTheories  PersonTheory[]
+}
+
+model Artifact {
+  id                      String   @id @default(cuid())
+  slug                    String   @unique
+  name                    String
+  alternateNames          String?
+  description             String?
+  civilization            String?
+  historicalPeriod        String?
+  discoveryContext        String?
+  archaeologicalConsensus String?
+  ancientAstronautView    String?
+  currentLocation         String?
+  internalNotes           String?
+  status                  String   @default("DRAFT")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  images          ImageAsset[]
+  bookChapterItems BookChapterItem[]
+  episodeArtifacts EpisodeArtifact[]
+  entryArtifacts  EntryArtifact[]
+  locationArtifacts LocationArtifact[]
+  claimArtifacts  ClaimArtifact[]
+}
+
+model Civilization {
+  id                  String   @id @default(cuid())
+  slug                String   @unique
+  name                String
+  alternateNames      String?
+  timeRange           String?
+  region              String?
+  description         String?
+  notableAchievements String?
+  internalNotes       String?
+  status              String   @default("DRAFT")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  bookChapterItems BookChapterItem[]
+  episodeCivilizations EpisodeCivilization[]
+  locationCivilizations LocationCivilization[]
+  civilizationDeities CivilizationDeity[]
+}
+
+model Deity {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  name                 String
+  alternateNames       String?
+  mythology            String?
+  description          String?
+  ancientAstronautView String?
+  internalNotes        String?
+  status               String   @default("DRAFT")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  bookChapterItems BookChapterItem[]
+  civilizationDeities CivilizationDeity[]
+}
+
+model AncientText {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  title                String
+  alternateNames       String?
+  origin               String?
+  civilization         String?
+  approximateDate      String?
+  description          String?
+  relevantPassages     String?
+  ancientAstronautView String?
+  scholarlyConsensus   String?
+  internalNotes        String?
+  status               String   @default("DRAFT")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relations
+  citations       Citation[]
+  tags            TagOnEntity[]
+  bookChapterItems BookChapterItem[]
+}
+
+model TimelineEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  dateDisplay String
+  sortYear    Int
+  category    String?
+  status      String   @default("DRAFT")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tags        TagOnEntity[]
+}
+
+// ============================================================
+// EVIDENCE & CLAIMS
+// ============================================================
+
+model Claim {
+  id             String   @id @default(cuid())
+  statement      String
+  evidenceType   String
+  contextLevel   Int      @default(1)
+  explanation    String?
+  sourceText     String?
+  notes          String?
+  lastReviewedAt DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Parent references
+  episodeId String?
+  episode   Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  entryId   String?
+  entry     EncyclopediaEntry? @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  theoryId  String?
+  theory    Theory? @relation(fields: [theoryId], references: [id], onDelete: Cascade)
+
+  // Relations
+  citations      Citation[]
+  claimArtifacts ClaimArtifact[]
+}
+
+// ============================================================
+// CITATIONS & SOURCES
+// ============================================================
+
+model Source {
+  id              String   @id @default(cuid())
+  title           String
+  author          String?
+  publicationYear Int?
+  publisher       String?
+  url             String?
+  isbn            String?
+  sourceType      String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  citations Citation[]
+}
+
+model Citation {
+  id          String   @id @default(cuid())
+  sourceId    String
+  source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  pageNumbers String?
+  chapter     String?
+  quote       String?
+  note        String?
+  accessDate  String?
+  createdAt   DateTime @default(now())
+
+  // Polymorphic parent
+  episodeId      String?
+  episode        Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  entryId        String?
+  entry          EncyclopediaEntry? @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  personId       String?
+  person         Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+  locationId     String?
+  location       Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  artifactId     String?
+  artifact       Artifact? @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  civilizationId String?
+  civilization   Civilization? @relation(fields: [civilizationId], references: [id], onDelete: Cascade)
+  deityId        String?
+  deity          Deity? @relation(fields: [deityId], references: [id], onDelete: Cascade)
+  ancientTextId  String?
+  ancientText    AncientText? @relation(fields: [ancientTextId], references: [id], onDelete: Cascade)
+  claimId        String?
+  claim          Claim? @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  theoryId       String?
+  theory         Theory? @relation(fields: [theoryId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// IMAGES & ASSETS
+// ============================================================
+
+model ImageAsset {
+  id            String   @id @default(cuid())
+  filename      String
+  altText       String?
+  caption       String?
+  credit        String?
+  license       String?
+  licenseUrl    String?
+  width         Int?
+  height        Int?
+  fileSizeBytes Int?
+  mimeType      String?
+  filePath      String
+
+  episodeId  String?
+  episode    Episode? @relation(fields: [episodeId], references: [id], onDelete: SetNull)
+  entryId    String?
+  entry      EncyclopediaEntry? @relation(fields: [entryId], references: [id], onDelete: SetNull)
+  personId   String?
+  person     Person? @relation(fields: [personId], references: [id], onDelete: SetNull)
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  artifactId String?
+  artifact   Artifact? @relation(fields: [artifactId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// TAGGING
+// ============================================================
+
+model Tag {
+  id       String @id @default(cuid())
+  name     String @unique
+  slug     String @unique
+  category String?
+
+  entities TagOnEntity[]
+}
+
+model TagOnEntity {
+  id  String @id @default(cuid())
+  tagId String
+  tag   Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  episodeId      String?
+  episode        Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  entryId        String?
+  entry          EncyclopediaEntry? @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  personId       String?
+  person         Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+  locationId     String?
+  location       Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  artifactId     String?
+  artifact       Artifact? @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  civilizationId String?
+  civilization   Civilization? @relation(fields: [civilizationId], references: [id])
+  deityId        String?
+  deity          Deity? @relation(fields: [deityId], references: [id])
+  ancientTextId  String?
+  ancientText    AncientText? @relation(fields: [ancientTextId], references: [id])
+  theoryId       String?
+  theory         Theory? @relation(fields: [theoryId], references: [id])
+  timelineEventId String?
+  timelineEvent  TimelineEvent? @relation(fields: [timelineEventId], references: [id])
+}
+
+// ============================================================
+// JUNCTION TABLES (Many-to-Many)
+// ============================================================
+
+model EpisodeEntry {
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  entryId   String
+  entry     EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, entryId])
+}
+
+model EpisodePerson {
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  personId  String
+  person    Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  role      String?
+
+  @@id([episodeId, personId])
+}
+
+model EpisodeLocation {
+  episodeId  String
+  episode    Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, locationId])
+}
+
+model EpisodeArtifact {
+  episodeId  String
+  episode    Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  artifactId String
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, artifactId])
+}
+
+model EpisodeCivilization {
+  episodeId      String
+  episode        Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  civilizationId String
+  civilization   Civilization @relation(fields: [civilizationId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, civilizationId])
+}
+
+model EntryPerson {
+  entryId  String
+  entry    EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  personId String
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, personId])
+}
+
+model EntryLocation {
+  entryId    String
+  entry      EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, locationId])
+}
+
+model EntryArtifact {
+  entryId    String
+  entry      EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  artifactId String
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, artifactId])
+}
+
+model EntryRelation {
+  sourceId     String
+  source       EncyclopediaEntry @relation("source", fields: [sourceId], references: [id], onDelete: Cascade)
+  targetId     String
+  target       EncyclopediaEntry @relation("target", fields: [targetId], references: [id], onDelete: Cascade)
+  relationType String?
+
+  @@id([sourceId, targetId])
+}
+
+model PersonTheory {
+  personId String
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  theoryId String
+  theory   Theory @relation(fields: [theoryId], references: [id], onDelete: Cascade)
+  role     String?
+
+  @@id([personId, theoryId])
+}
+
+model ClaimArtifact {
+  claimId    String
+  claim      Claim @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  artifactId String
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
+  @@id([claimId, artifactId])
+}
+
+model LocationArtifact {
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  artifactId String
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
+  @@id([locationId, artifactId])
+}
+
+model LocationCivilization {
+  locationId     String
+  location       Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  civilizationId String
+  civilization   Civilization @relation(fields: [civilizationId], references: [id], onDelete: Cascade)
+
+  @@id([locationId, civilizationId])
+}
+
+model CivilizationDeity {
+  civilizationId String
+  civilization   Civilization @relation(fields: [civilizationId], references: [id], onDelete: Cascade)
+  deityId        String
+  deity          Deity @relation(fields: [deityId], references: [id], onDelete: Cascade)
+
+  @@id([civilizationId, deityId])
+}
+
+// ============================================================
+// BOOK BUILDER
+// ============================================================
+
+model BookEdition {
+  id              String   @id @default(cuid())
+  title           String
+  subtitle        String?
+  slug            String   @unique
+  description     String?
+  author          String?
+  publisher       String?
+  isbn            String?
+  publicationDate String?
+  language        String   @default("en")
+  coverImagePath  String?
+  pageSize        String   @default("US_LETTER")
+  marginPreset    String   @default("STANDARD")
+  mirroredMargins Boolean  @default(true)
+  bleedMm         Float    @default(3.0)
+  outputFormat    String   @default("PDF")
+  status          String   @default("DRAFT")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  chapters    BookChapter[]
+  frontMatter BookFrontMatter[]
+  appendices  BookAppendix[]
+}
+
+model BookChapter {
+  id          String   @id @default(cuid())
+  editionId   String
+  edition     BookEdition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  title       String
+  subtitle    String?
+  chapterType String
+  sortOrder   Int
+  isDivider   Boolean  @default(false)
+  isIncluded  Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items BookChapterItem[]
+}
+
+model BookChapterItem {
+  id         String  @id @default(cuid())
+  chapterId  String
+  chapter    BookChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  sortOrder  Int
+  isIncluded Boolean @default(true)
+
+  episodeId      String?
+  episode        Episode? @relation(fields: [episodeId], references: [id])
+  entryId        String?
+  entry          EncyclopediaEntry? @relation(fields: [entryId], references: [id])
+  personId       String?
+  person         Person? @relation(fields: [personId], references: [id])
+  locationId     String?
+  location       Location? @relation(fields: [locationId], references: [id])
+  theoryId       String?
+  theory         Theory? @relation(fields: [theoryId], references: [id])
+  artifactId     String?
+  artifact       Artifact? @relation(fields: [artifactId], references: [id])
+  civilizationId String?
+  civilization   Civilization? @relation(fields: [civilizationId], references: [id])
+  deityId        String?
+  deity          Deity? @relation(fields: [deityId], references: [id])
+  ancientTextId  String?
+  ancientText    AncientText? @relation(fields: [ancientTextId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model BookFrontMatter {
+  id        String  @id @default(cuid())
+  editionId String
+  edition   BookEdition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  type      String
+  content   String?
+  sortOrder Int
+  isIncluded Boolean @default(true)
+}
+
+model BookAppendix {
+  id        String  @id @default(cuid())
+  editionId String
+  edition   BookEdition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  type      String
+  sortOrder Int
+  isIncluded Boolean @default(true)
+}

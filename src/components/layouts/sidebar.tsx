@@ -39,6 +39,9 @@ const navigation = [
   { type: "divider" as const, label: "Publishing" },
   { name: "Book Builder", href: "/book-builder", icon: BookMarked },
   { name: "Search", href: "/search", icon: Search },
+  { type: "divider" as const, label: "Data" },
+  { name: "Import", href: "/import", icon: Search },
+  { name: "Export", href: "/export", icon: Search },
 ];
 
 export function Sidebar() {
